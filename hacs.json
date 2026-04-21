@@ -1,4 +1,6 @@
 {
   "name": "Nice MNCUT",
+  "content_in_root": false,
+  "domains": ["nice_mncut"],
   "render_readme": true
 }
