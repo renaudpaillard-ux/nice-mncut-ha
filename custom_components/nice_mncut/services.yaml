@@ -1,0 +1,12 @@
+clear_anomalies:
+  name: Acquitter les anomalies
+  description: Efface les anomalies (sabotage, contact ouvert, etc.) pour permettre le réarmement
+  fields:
+    areas:
+      name: Zones
+      description: Zones à acquitter (par défaut toutes les zones)
+      required: false
+      default: "123456"
+      example: "123456"
+      selector:
+        text:

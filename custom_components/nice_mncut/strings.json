@@ -1,0 +1,19 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configuration Nice MNCUT",
+        "description": "Entrez l'adresse IP et le code PIN de votre centrale Nice MNCUT",
+        "data": {
+          "ip": "Adresse IP",
+          "pin": "Code PIN"
+        }
+      }
+    },
+    "error": {
+      "invalid_ip": "Adresse IP invalide",
+      "invalid_pin": "Code PIN invalide"
+    }
+  }
+}
+

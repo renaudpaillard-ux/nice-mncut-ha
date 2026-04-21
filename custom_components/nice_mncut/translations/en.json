@@ -1,0 +1,18 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure Nice MNCUT",
+        "description": "Enter the IP address and PIN code of your Nice MNCUT control panel",
+        "data": {
+          "ip": "IP Address",
+          "pin": "PIN Code"
+        }
+      }
+    },
+    "error": {
+      "invalid_ip": "Invalid IP address",
+      "invalid_pin": "Invalid PIN code"
+    }
+  }
+}
