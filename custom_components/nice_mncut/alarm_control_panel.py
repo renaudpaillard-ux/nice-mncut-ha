@@ -73,10 +73,15 @@ class NiceMncutAlarmPanel(AlarmControlPanelEntity):
         self.async_write_ha_state()
 
     @property
-    def state(self) -> AlarmControlPanelState | None:
+    def available(self) -> bool:
+        """Retourne True si l'entité est disponible."""
+        return self._hub.available
+
+    @property
+    def alarm_state(self) -> AlarmControlPanelState | None:
         """Retourne l'état actuel de l'alarme."""
-        hub_state = self._hub.state.get("armed_status", "unavailable")
-        return STATE_MAP.get(hub_state, AlarmControlPanelState.DISARMED)
+        hub_state = self._hub.state.get("armed_status")
+        return STATE_MAP.get(hub_state)
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:

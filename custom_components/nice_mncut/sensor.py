@@ -9,7 +9,8 @@ Changelog:
 import logging
 from typing import Any
 
-from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import SensorDeviceClass, SensorEntity, SensorStateClass
+from homeassistant.const import UnitOfTime
 from homeassistant.core import HomeAssistant
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -77,7 +78,7 @@ class NiceMncutStateSensor(SensorEntity):
     @property
     def available(self) -> bool:
         """Retourne True si le sensor est disponible."""
-        return self._hub._ws is not None
+        return self._hub.available
 
 
 class NiceMncutBatteryLevelSensor(SensorEntity):
@@ -87,8 +88,8 @@ class NiceMncutBatteryLevelSensor(SensorEntity):
     _attr_name = "Niveau batterie"
     _attr_icon = "mdi:battery"
     _attr_native_unit_of_measurement = "%"
-    _attr_device_class = "battery"
-    _attr_state_class = "measurement"
+    _attr_device_class = SensorDeviceClass.BATTERY
+    _attr_state_class = SensorStateClass.MEASUREMENT
 
     def __init__(self, hub, entry):
         """Initialise le sensor."""
@@ -142,7 +143,7 @@ class NiceMncutBatteryLevelSensor(SensorEntity):
     @property
     def available(self) -> bool:
         """Retourne True si le sensor est disponible."""
-        return self._hub._ws is not None and self._hub.state.get("battery_level") is not None
+        return self._hub.available and self._hub.state.get("battery_level") is not None
 
 
 class NiceMncutExitDelaySensor(SensorEntity):
@@ -151,8 +152,8 @@ class NiceMncutExitDelaySensor(SensorEntity):
     _attr_has_entity_name = True
     _attr_name = "Délai de sortie"
     _attr_icon = "mdi:timer-sand"
-    _attr_native_unit_of_measurement = "s"
-    _attr_device_class = "duration"
+    _attr_native_unit_of_measurement = UnitOfTime.SECONDS
+    _attr_device_class = SensorDeviceClass.DURATION
 
     def __init__(self, hub, entry):
         """Initialise le sensor."""
@@ -227,7 +228,7 @@ class NiceMncutExitDelaySensor(SensorEntity):
     @property
     def available(self) -> bool:
         """Retourne True si le sensor est disponible."""
-        return self._hub._ws is not None
+        return self._hub.available
 
 
 class NiceMncutAreasSensor(SensorEntity):
@@ -263,11 +264,11 @@ class NiceMncutAreasSensor(SensorEntity):
         self.async_write_ha_state()
 
     @property
-    def native_value(self) -> str | None:
+    def native_value(self) -> int:
         """Retourne le nombre de zones armées (st=2)."""
         areas = self._hub.state.get("areas", {})
         armed_count = sum(1 for st in areas.values() if st == 2)
-        return str(armed_count)
+        return armed_count
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
@@ -290,4 +291,4 @@ class NiceMncutAreasSensor(SensorEntity):
     @property
     def available(self) -> bool:
         """Retourne True si le sensor est disponible."""
-        return self._hub._ws is not None
+        return self._hub.available

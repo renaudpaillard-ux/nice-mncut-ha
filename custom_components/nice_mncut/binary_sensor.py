@@ -136,7 +136,7 @@ class NiceMncutBinarySensor(BinarySensorEntity):
     @property
     def available(self) -> bool:
         """Retourne True si le sensor est disponible."""
-        return self._hub._ws is not None
+        return self._hub.available
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:

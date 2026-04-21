@@ -11,10 +11,11 @@ Changelog:
 import asyncio
 import logging
 import time
-import websockets
-from typing import Any
+from collections.abc import Callable
+from contextlib import suppress
 
-from homeassistant.core import HomeAssistant
+import websockets
+from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.typing import ConfigType
 from homeassistant.const import Platform
@@ -24,6 +25,7 @@ from .const import DOMAIN, CONF_IP, CONF_PIN, STX, ETX
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS = [Platform.ALARM_CONTROL_PANEL, Platform.BINARY_SENSOR, Platform.SENSOR]
+SERVICE_CLEAR_ANOMALIES = "clear_anomalies"
 
 
 class NiceMncutHub:
@@ -33,10 +35,10 @@ class NiceMncutHub:
         self.ip = ip
         self.pin = pin
         self._ws = None
-        self._listeners = []
+        self._listeners: list[Callable[[], None]] = []
         self._running = False
-        self._reconnect_task = None
-        self._last_message_time = None
+        self._reconnect_task: asyncio.Task | None = None
+        self._last_message_time: float | None = None
 
         # État partagé
         self.state = {
@@ -51,13 +53,20 @@ class NiceMncutHub:
             "sensor_triggered": False,
             "panic": False,
             "maintenance": False,
+            "exit_delay": None,
+            "exit_delay_start": None,
         }
 
-    def add_listener(self, callback):
+    @property
+    def available(self) -> bool:
+        """Retourne True si le hub est connecté."""
+        return self._ws is not None
+
+    def add_listener(self, callback: Callable[[], None]) -> None:
         """Ajoute un callback pour être notifié des changements d'état."""
         self._listeners.append(callback)
 
-    def remove_listener(self, callback):
+    def remove_listener(self, callback: Callable[[], None]) -> None:
         """Retire un callback."""
         if callback in self._listeners:
             self._listeners.remove(callback)
@@ -80,8 +89,12 @@ class NiceMncutHub:
         self._running = False
         if self._reconnect_task:
             self._reconnect_task.cancel()
+            with suppress(asyncio.CancelledError):
+                await self._reconnect_task
+            self._reconnect_task = None
         if self._ws:
             await self._ws.close()
+            self._ws = None
 
     async def _maintain_connection(self):
         """Maintient la connexion WebSocket active."""
@@ -172,8 +185,8 @@ class NiceMncutHub:
                 self.state["battery_level"] = battery_percent
                 _LOGGER.debug("Nice MNCUT → Niveau batterie: %s%%", battery_percent)
                 await self._notify_listeners()
-            except:
-                pass
+            except (IndexError, UnicodeDecodeError, ValueError) as err:
+                _LOGGER.debug("Nice MNCUT → Impossible de parser le niveau batterie: %s", err)
             return
 
         # Traiter AL002 pour l'état de la centrale
@@ -184,7 +197,7 @@ class NiceMncutHub:
         try:
             raw_state = msg.split(b"<State>")[1].split(b"</State>")[0].decode()
             self.state["raw_state"] = raw_state
-        except:
+        except (IndexError, UnicodeDecodeError):
             raw_state = None
 
         # Extraction des zones et délai de sortie
@@ -425,6 +438,19 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     return True
 
 
+async def async_handle_clear_anomalies(call: ServiceCall) -> None:
+    """Acquitte les anomalies sur tous les hubs connectés."""
+    hubs: dict[str, NiceMncutHub] = call.hass.data.get(DOMAIN, {})
+    areas = call.data.get("areas", "123456")
+
+    tasks = [hub.clear_anomalies(areas) for hub in hubs.values() if hub.available]
+    if not tasks:
+        _LOGGER.warning("Nice MNCUT → Aucun hub connecté pour le service clear_anomalies")
+        return
+
+    await asyncio.gather(*tasks)
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Configuration de l'intégration via config_entry."""
     hass.data.setdefault(DOMAIN, {})
@@ -439,14 +465,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Démarrage du Hub
     await hub.start()
 
-    # Enregistrement du service clear_anomalies
-    async def handle_clear_anomalies(call):
-        """Service pour acquitter les anomalies."""
-        areas = call.data.get("areas", "123456")
-        await hub.clear_anomalies(areas)
-
-    if not hass.services.has_service(DOMAIN, "clear_anomalies"):
-        hass.services.async_register(DOMAIN, "clear_anomalies", handle_clear_anomalies)
+    if not hass.services.has_service(DOMAIN, SERVICE_CLEAR_ANOMALIES):
+        hass.services.async_register(
+            DOMAIN,
+            SERVICE_CLEAR_ANOMALIES,
+            async_handle_clear_anomalies,
+        )
         _LOGGER.info("Nice MNCUT : service clear_anomalies enregistré")
 
     # Chargement des plateformes
@@ -462,5 +486,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     if unload_ok:
         hub = hass.data[DOMAIN].pop(entry.entry_id)
         await hub.stop()
+        if not hass.data[DOMAIN] and hass.services.has_service(DOMAIN, SERVICE_CLEAR_ANOMALIES):
+            hass.services.async_remove(DOMAIN, SERVICE_CLEAR_ANOMALIES)
 
     return unload_ok

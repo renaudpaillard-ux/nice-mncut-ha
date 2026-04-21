@@ -12,7 +12,9 @@
     },
     "error": {
       "invalid_ip": "Adresse IP invalide",
-      "invalid_pin": "Code PIN invalide"
+      "invalid_pin": "Code PIN invalide",
+      "cannot_connect": "Impossible de se connecter à la centrale",
+      "unknown": "Erreur inconnue"
     }
   }
 }

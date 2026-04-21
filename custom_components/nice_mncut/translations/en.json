@@ -12,7 +12,9 @@
     },
     "error": {
       "invalid_ip": "Invalid IP address",
-      "invalid_pin": "Invalid PIN code"
+      "invalid_pin": "Invalid PIN code",
+      "cannot_connect": "Cannot connect to the control panel",
+      "unknown": "Unknown error"
     }
   }
 }
