@@ -1,12 +1,14 @@
 """Sensors pour Nice MNCUT (informations supplémentaires).
 
-Version: 1.1.0
+Version: 1.0.0
 Date: 2026-04-21
 Changelog:
-- v1.1.0: Version initiale stable avec binary sensors et alarm panel
+- v1.0.0: Version initiale stable avec binary sensors et alarm panel
 """
 
+import asyncio
 import logging
+import time
 from typing import Any
 
 from homeassistant.components.sensor import SensorDeviceClass, SensorEntity, SensorStateClass
@@ -192,7 +194,6 @@ class NiceMncutExitDelaySensor(SensorEntity):
 
     async def _countdown_updater(self):
         """Met à jour le décompte toutes les secondes."""
-        import asyncio
         try:
             while self._hub.state.get("exit_delay_start"):
                 await asyncio.sleep(1)
@@ -207,7 +208,6 @@ class NiceMncutExitDelaySensor(SensorEntity):
         exit_delay_start = self._hub.state.get("exit_delay_start")
         
         if exit_delay and exit_delay_start:
-            import time
             elapsed = time.time() - exit_delay_start
             remaining = max(0, exit_delay - int(elapsed))
             return remaining

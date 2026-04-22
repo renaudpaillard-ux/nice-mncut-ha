@@ -8,6 +8,13 @@
           "ip": "IP Address",
           "pin": "PIN Code"
         }
+      },
+      "reconfigure": {
+        "title": "Reconfigure Nice MNCUT",
+        "description": "Update the IP address of your Nice MNCUT control panel",
+        "data": {
+          "ip": "IP Address"
+        }
       }
     },
     "error": {

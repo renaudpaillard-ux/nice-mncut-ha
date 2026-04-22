@@ -10,6 +10,7 @@ Changelog:
 
 import asyncio
 import logging
+import re
 import time
 from collections.abc import Callable
 from contextlib import suppress
@@ -20,7 +21,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.typing import ConfigType
 from homeassistant.const import Platform
 
-from .const import DOMAIN, CONF_IP, CONF_PIN, STX, ETX
+from .const import DOMAIN, CONF_IP, CONF_PIN, STX, ETX, WS_TARGET_ID, WS_PAIRING_USERNAME, WS_PAIRING_PASSWORD
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -117,8 +118,8 @@ class NiceMncutHub:
                     source = str(int(time.time() * 1000))
                     login = (
                         f'<?xml version="1.0"?>'
-                        f'<Request id="main_obj" source="{source}" target="1234567890" '
-                        f'type="PAIRING"><Authentication username="host" password="00000"/></Request>'
+                        f'<Request id="main_obj" source="{source}" target="{WS_TARGET_ID}" '
+                        f'type="PAIRING"><Authentication username="{WS_PAIRING_USERNAME}" password="{WS_PAIRING_PASSWORD}"/></Request>'
                     )
                     await ws.send(STX + login.encode() + ETX)
                     _LOGGER.debug("Nice MNCUT → LOGIN envoyé")
@@ -127,7 +128,7 @@ class NiceMncutHub:
                     await asyncio.sleep(0.5)
                     status_request = (
                         f'<?xml version="1.0" encoding="utf-8"?>'
-                        f'<Request id="00" source="{source}" target="1234567890" '
+                        f'<Request id="00" source="{source}" target="{WS_TARGET_ID}" '
                         f'protocolVersion="1.0" type="STATUS"/>'
                     )
                     await ws.send(STX + status_request.encode() + ETX)
@@ -201,7 +202,6 @@ class NiceMncutHub:
             raw_state = None
 
         # Extraction des zones et délai de sortie
-        import re
         area_re = re.compile(rb'<Area id="(\d+)" st="(\d+)"(?:\s+texit="(\d+)")?')
         areas = {}
         exit_delay = None
@@ -330,7 +330,7 @@ class NiceMncutHub:
         source = str(int(time.time() * 1000))
         cmd_xml = (
             f'<?xml version="1.0" encoding="utf-8"?>'
-            f'<Request id="00" source="{source}" target="1234567890" '
+            f'<Request id="00" source="{source}" target="{WS_TARGET_ID}" '
             f'protocolVersion="1.0" type="DEVICE_CMD">'
             f'<Command>{cmd}</Command>'
             f'<Device>AL002</Device>'
@@ -364,7 +364,7 @@ class NiceMncutHub:
         # 1. LOGIN normal (TERM_CODE)
         login_normal = (
             f'<?xml version="1.0" encoding="utf-8"?>'
-            f'<Request id="widget_login" source="{source}" target="1234567890" '
+            f'<Request id="widget_login" source="{source}" target="{WS_TARGET_ID}" '
             f'protocolVersion="1.0" type="MENU">'
             f'<filter>USER|POWERUSER</filter>'
             f'<act>LOGIN</act>'
@@ -376,7 +376,7 @@ class NiceMncutHub:
         # 2. LOGIN forcé (TERM_CODE_FORCE)
         login_force = (
             f'<?xml version="1.0" encoding="utf-8"?>'
-            f'<Request id="widget_sideanom" source="{source}" target="1234567890" '
+            f'<Request id="widget_sideanom" source="{source}" target="{WS_TARGET_ID}" '
             f'protocolVersion="1.0" type="MENU">'
             f'<filter>USER|POWERUSER</filter>'
             f'<act>LOGIN</act>'
@@ -388,7 +388,7 @@ class NiceMncutHub:
         # 3. ANOM_ACK
         ack_xml = (
             f'<?xml version="1.0" encoding="utf-8"?>'
-            f'<Request id="00" source="{source}" target="1234567890" '
+            f'<Request id="00" source="{source}" target="{WS_TARGET_ID}" '
             f'protocolVersion="1.0" type="STATE">'
             f'<type>ANOM_ACK</type>'
             f'<value>{areas}</value>'
@@ -398,7 +398,7 @@ class NiceMncutHub:
         # 4. Commande vide (validation)
         cmd_empty = (
             f'<?xml version="1.0" encoding="utf-8"?>'
-            f'<Request id="00" source="{source}" target="1234567890" '
+            f'<Request id="00" source="{source}" target="{WS_TARGET_ID}" '
             f'protocolVersion="1.0" type="DEVICE_CMD">'
             f'<Command></Command>'
             f'<Device>AL002</Device>'

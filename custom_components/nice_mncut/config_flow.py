@@ -2,12 +2,15 @@
 
 import asyncio
 import ipaddress
+import logging
 
 import voluptuous as vol
 import websockets
 from homeassistant import config_entries
 
 from .const import DOMAIN, CONF_IP, CONF_PIN
+
+_LOGGER = logging.getLogger(__name__)
 
 
 async def validate_input(data: dict[str, str]) -> None:
@@ -62,6 +65,7 @@ class NiceMncutConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             except (OSError, TimeoutError, websockets.WebSocketException):
                 errors["base"] = "cannot_connect"
             except Exception:
+                _LOGGER.exception("Nice MNCUT → Erreur inattendue dans config flow")
                 errors["base"] = "unknown"
 
         data_schema = vol.Schema(
@@ -74,5 +78,34 @@ class NiceMncutConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="user",
             data_schema=data_schema,
+            errors=errors,
+        )
+
+    async def async_step_reconfigure(self, user_input=None):
+        """Permet de modifier l'adresse IP sans supprimer l'entrée."""
+        errors = {}
+
+        if user_input is not None:
+            try:
+                await validate_input({
+                    CONF_IP: user_input[CONF_IP],
+                    CONF_PIN: self._get_reconfigure_entry().data[CONF_PIN],
+                })
+                return self.async_update_reload_and_abort(
+                    self._get_reconfigure_entry(),
+                    data_updates={CONF_IP: user_input[CONF_IP]},
+                    title=f"Nice MNCUT ({user_input[CONF_IP]})",
+                )
+            except ValueError:
+                errors[CONF_IP] = "invalid_ip"
+            except (OSError, TimeoutError, websockets.WebSocketException):
+                errors["base"] = "cannot_connect"
+            except Exception:
+                _LOGGER.exception("Nice MNCUT → Erreur inattendue lors de la reconfiguration")
+                errors["base"] = "unknown"
+
+        return self.async_show_form(
+            step_id="reconfigure",
+            data_schema=vol.Schema({vol.Required(CONF_IP): str}),
             errors=errors,
         )

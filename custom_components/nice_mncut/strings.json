@@ -8,6 +8,13 @@
           "ip": "Adresse IP",
           "pin": "Code PIN"
         }
+      },
+      "reconfigure": {
+        "title": "Reconfigurer Nice MNCUT",
+        "description": "Modifiez l'adresse IP de votre centrale Nice MNCUT",
+        "data": {
+          "ip": "Adresse IP"
+        }
       }
     },
     "error": {
