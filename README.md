@@ -1,5 +1,7 @@
 # Nice MNCUT — Home Assistant Integration
 
+![Preview](assets/dashboard_premium.png)
+
 🇫🇷 [Lire en français](README.fr.md)
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
@@ -9,13 +11,39 @@ Home Assistant integration for the **Nice MNCUT** alarm control panel, using a l
 
 ---
 
+## 🎯 Project Context
+
+This repository is based on a real personal home automation project and is also intended to demonstrate solid integration work around:
+
+- Home Assistant custom integration architecture
+- local-first communication with no cloud dependency
+- real-time state handling over WebSocket
+- practical dashboard usage and HACS distribution
+
+---
+
+## 🧠 Technical Background
+
+This integration was developed after a reverse-engineering phase of the Nice MNCUT system.
+
+The work included:
+
+- analyzing WebSocket communications between the web interface and the alarm panel
+- inspecting the alarm's web application code
+- identifying message formats and state transitions
+- reconstructing a reliable communication layer for Home Assistant
+
+This approach made it possible to build a fully local, real-time integration without relying on any official API or cloud service.
+
+---
+
 ## ✨ Features
 
-- 🔒 Arm / Disarm / Arm Home via Home Assistant
+- 🔒 Arm / Disarm / Partial arm via Home Assistant
 - 📡 Real-time state updates via WebSocket (`local_push`)
 - 🔋 Battery level monitoring (%)
 - ⚡ Mains power status
-- 🚨 Sabotage, open contact, triggered sensor detection
+- 🚨 Tamper, open contact, and triggered sensor detection
 - ⏱️ Exit delay countdown
 - 🛠️ Anomaly acknowledgement service (`clear_anomalies`)
 - 🌐 Multi-language: English & French
@@ -58,8 +86,18 @@ Copy `custom_components/nice_mncut` into `/config/custom_components/` and restar
 
 ## 🖥️ Dashboard Examples
 
-- Simple: `examples/dashboard_simple.yaml`
-- Premium: `examples/dashboard_premium.yaml`
+- [Simple: `examples/dashboard_simple.yaml`](examples/dashboard_simple.yaml)
+- [Premium: `examples/dashboard_premium.yaml`](examples/dashboard_premium.yaml)
+
+### 🧩 Simple Dashboard
+
+![Simple dashboard](assets/dashboard_simple.png)
+
+### ✨ Premium Dashboard
+
+![Premium dashboard](assets/dashboard_premium.png)
+![Premium dashboard - Armed](assets/dashboard_premium_armed.png)
+![Premium dashboard - Opened contact](assets/dashboard_premium_opened_contact.png)
 
 ---
 
@@ -125,6 +163,14 @@ data:
 **Cannot re-arm after anomaly:**
 
 - Use the `nice_mncut.clear_anomalies` service first
+
+---
+
+## 🧰 Engineering Workflow
+
+This project also reflects a modern development workflow built around VS Code, reverse engineering, and AI-assisted coding tools such as Codex and Claude Code.
+
+These tools were used to accelerate implementation, protocol analysis, documentation, and iteration cycles, while system understanding, architecture decisions, validation, and final technical choices remained under the author's control.
 
 ---
 

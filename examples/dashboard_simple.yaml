@@ -1,6 +1,6 @@
 type: masonry
 title: Nice
-path: nice-mncut
+path: nice-mncut-simple
 icon: mdi:shield-home-outline
 cards:
   - type: alarm-panel
