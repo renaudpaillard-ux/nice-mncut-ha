@@ -1,0 +1,216 @@
+type: masonry
+title: Nice
+path: nice-mncut
+icon: mdi:shield-home-outline
+cards:
+  - type: vertical-stack
+    cards:
+      - type: custom:button-card
+        entity: alarm_control_panel.nice_mncut_alarm
+        name: Alarme Nice MNCUT
+        show_state: true
+        state_display: |
+          [[[
+            const s = entity?.state;
+            const delay = states['sensor.nice_mncut_alarm_delai_de_sortie']?.state;
+
+            if (s === 'armed_home') return '🏠 Armée partielle';
+            if (s === 'armed_away') return '🔒 Armée totale';
+            if (s === 'disarmed') return '✓ Désarmée';
+            if (s === 'arming' && delay && delay !== 'unavailable' && delay !== 'unknown') {
+              return `⏳ Armement... ${delay}s`;
+            }
+            if (s === 'arming') return '⏳ Armement...';
+            if (s === 'disarming') return '⏳ Désarmement...';
+            if (s === 'unavailable') return '⚠️ Indisponible';
+            return '⚠️ Indéfini';
+          ]]]
+        icon: |
+          [[[
+            const s = entity?.state;
+            if (s === 'armed_home') return 'mdi:shield-home';
+            if (s === 'armed_away') return 'mdi:shield-lock';
+            if (s === 'disarmed') return 'mdi:shield-off';
+            if (s === 'arming' || s === 'disarming') return 'mdi:shield-sync';
+            if (s === 'unavailable') return 'mdi:shield-alert';
+            return 'mdi:shield-alert-outline';
+          ]]]
+        styles:
+          card:
+            - padding: 24px
+            - border-radius: 20px
+            - font-size: 20px
+            - text-align: center
+            - color: white
+            - box-shadow: 0 4px 12px rgba(0,0,0,0.15)
+            - background: |
+                [[[
+                  const s = entity?.state;
+                  if (s === 'disarmed') return '#4CAF50';
+                  if (s === 'armed_home') return '#FB8C00';
+                  if (s === 'armed_away') return '#E53935';
+                  if (s === 'arming' || s === 'disarming') return 'linear-gradient(135deg, #78909C 0%, #90A4AE 100%)';
+                  return 'linear-gradient(135deg, #757575 0%, #9E9E9E 100%)';
+                ]]]
+          icon:
+            - color: black
+            - width: 60px
+            - animation: |
+                [[[
+                  if (entity?.state === 'arming' || entity?.state === 'disarming') return 'rotation 2s linear infinite';
+                  return 'none';
+                ]]]
+          name:
+            - font-size: 24px
+            - font-weight: bold
+            - margin-top: 12px
+          state:
+            - font-size: 20px
+            - opacity: 0.95
+            - margin-top: 8px
+            - font-weight: 600
+        extra_styles: |
+          @keyframes rotation {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: Total
+            icon: mdi:shield-lock
+            tap_action:
+              action: call-service
+              service: alarm_control_panel.alarm_arm_away
+              target:
+                entity_id: alarm_control_panel.nice_mncut_alarm
+            styles:
+              card:
+                - background-color: "#E53935"
+                - color: white
+                - border-radius: 14px
+                - padding: 16px
+                - font-size: 16px
+          - type: custom:button-card
+            name: Partiel
+            icon: mdi:shield-home
+            tap_action:
+              action: call-service
+              service: alarm_control_panel.alarm_arm_home
+              target:
+                entity_id: alarm_control_panel.nice_mncut_alarm
+            styles:
+              card:
+                - background-color: "#FB8C00"
+                - color: white
+                - border-radius: 14px
+                - padding: 16px
+                - font-size: 16px
+          - type: custom:button-card
+            name: "OFF"
+            icon: mdi:shield-off
+            tap_action:
+              action: call-service
+              service: alarm_control_panel.alarm_disarm
+              target:
+                entity_id: alarm_control_panel.nice_mncut_alarm
+            styles:
+              card:
+                - background-color: "#4CAF50"
+                - color: white
+                - border-radius: 14px
+                - padding: 16px
+                - font-size: 16px
+      - type: custom:button-card
+        name: Réinitialiser anomalies
+        icon: mdi:refresh
+        tap_action:
+          action: call-service
+          service: nice_mncut.clear_anomalies
+        styles:
+          card:
+            - background-color: var(--ha-card-background)
+            - color: grey
+            - border-radius: 16px
+            - padding: 14px
+            - font-size: 16px
+            - font-weight: 600
+            - box-shadow: 0 0 8px rgba(57,57,53,0.25)
+          icon:
+            - width: 28px
+            - color: grey
+          name:
+            - margin-top: 2px
+            - font-size: 15px
+            - font-weight: 600
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.nice_mncut_alarm_capteur_declenche
+            state: "on"
+        card:
+          type: markdown
+          content: |
+            ## 🚨 Capteur déclenché
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.nice_mncut_alarm_batterie_faible
+            state: "on"
+        card:
+          type: markdown
+          content: |
+            ## ⚠️ Batterie faible
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.nice_mncut_alarm_alimentation_secteur
+            state: "off"
+        card:
+          type: markdown
+          content: |
+            ## 🔌 Coupure secteur — Sur batterie
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.nice_mncut_alarm_sabotage
+            state: "on"
+        card:
+          type: markdown
+          content: |
+            ## 🚨 Sabotage détecté
+      - type: conditional
+        conditions:
+          - condition: state
+            entity: binary_sensor.nice_mncut_alarm_contact_ouvert
+            state: "on"
+        card:
+          type: markdown
+          content: |
+            ## 🚪 Contact(s) ouvert(s) — Armement impossible
+      - type: entities
+        title: État du système
+        show_header_toggle: false
+        entities:
+          - entity: sensor.nice_mncut_alarm_etat_brut
+            name: Code état
+            icon: mdi:code-tags
+          - entity: sensor.nice_mncut_alarm_zones_armees
+            name: Zones armées
+            icon: mdi:home-group
+          - entity: sensor.nice_mncut_alarm_niveau_batterie
+            name: Niveau batterie
+            icon: mdi:battery
+          - type: divider
+          - entity: binary_sensor.nice_mncut_alarm_batterie_faible
+            name: Batterie
+            icon: mdi:battery
+          - entity: binary_sensor.nice_mncut_alarm_alimentation_secteur
+            name: Alimentation secteur
+            icon: mdi:power-plug
+          - entity: binary_sensor.nice_mncut_alarm_sabotage
+            name: Intégrité système
+            icon: mdi:shield-check
+          - entity: binary_sensor.nice_mncut_alarm_capteur_declenche
+            name: Capteur actif
+            icon: mdi:motion-sensor

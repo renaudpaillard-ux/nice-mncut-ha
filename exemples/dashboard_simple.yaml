@@ -1,0 +1,85 @@
+type: masonry
+title: Nice
+path: nice-mncut
+icon: mdi:shield-home-outline
+cards:
+  - type: alarm-panel
+    entity: alarm_control_panel.nice_mncut_alarm
+    name: Alarme Nice MNCUT
+    states:
+      - arm_home
+      - arm_away
+
+  - type: entities
+    title: État du système
+    show_header_toggle: false
+    entities:
+      - entity: sensor.nice_mncut_alarm_etat_brut
+        name: Code état
+      - entity: sensor.nice_mncut_alarm_zones_armees
+        name: Zones armées
+      - entity: sensor.nice_mncut_alarm_niveau_batterie
+        name: Niveau batterie
+      - type: divider
+      - entity: binary_sensor.nice_mncut_alarm_batterie_faible
+        name: Batterie faible
+      - entity: binary_sensor.nice_mncut_alarm_alimentation_secteur
+        name: Alimentation secteur
+      - entity: binary_sensor.nice_mncut_alarm_sabotage
+        name: Sabotage
+      - entity: binary_sensor.nice_mncut_alarm_capteur_declenche
+        name: Capteur déclenché
+      - entity: binary_sensor.nice_mncut_alarm_contact_ouvert
+        name: Contact ouvert
+
+  - type: button
+    name: Réinitialiser anomalies
+    icon: mdi:refresh
+    tap_action:
+      action: call-service
+      service: nice_mncut.clear_anomalies
+
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.nice_mncut_alarm_capteur_declenche
+        state: "on"
+    card:
+      type: markdown
+      content: >
+        ## 🚨 Capteur déclenché
+
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.nice_mncut_alarm_batterie_faible
+        state: "on"
+    card:
+      type: markdown
+      content: >
+        ## ⚠️ Batterie faible
+
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.nice_mncut_alarm_alimentation_secteur
+        state: "off"
+    card:
+      type: markdown
+      content: >
+        ## 🔌 Coupure secteur — fonctionnement sur batterie
+
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.nice_mncut_alarm_sabotage
+        state: "on"
+    card:
+      type: markdown
+      content: >
+        ## 🚨 Sabotage détecté
+
+  - type: conditional
+    conditions:
+      - entity: binary_sensor.nice_mncut_alarm_contact_ouvert
+        state: "on"
+    card:
+      type: markdown
+      content: >
+        ## 🚪 Contact(s) ouvert(s) — armement impossible

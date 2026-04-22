@@ -20,3 +20,6 @@ __pycache__/
 
 # Home Assistant local testing
 config/
+
+# Local files for personnal use
+_local
