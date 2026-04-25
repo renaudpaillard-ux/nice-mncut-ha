@@ -95,9 +95,11 @@ Copier `custom_components/nice_mncut` dans `/config/custom_components/` et redé
 
 ### ✨ Dashboard premium
 
-![Dashboard premium](assets/dashboard_premium.png)
-![Dashboard premium - Armé](assets/dashboard_premium_armed.png)
-![Dashboard premium - Contact ouvert](assets/dashboard_premium_opened_contact.png)
+<p align="center">
+  <img src="assets/dashboard_premium.png" width="600"><br><br>
+  <img src="assets/dashboard_premium_armed.png" width="600"><br><br>
+  <img src="assets/dashboard_premium_opened_contact.png" width="600">
+</p>
 
 ---
 
