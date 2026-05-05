@@ -1,11 +1,11 @@
 {
   "domain": "nice_mncut",
   "name": "Nice MNCUT Alarm",
-  "version": "1.0.2",
-  "documentation": "https://github.com/renaudpaillard-ux/nice-mncut-ha",
-  "issue_tracker": "https://github.com/renaudpaillard-ux/nice-mncut-ha/issues",
-  "config_flow": true,
-  "requirements": ["websockets>=11.0"],
   "codeowners": ["@renaudpaillard-ux"],
-  "iot_class": "local_push"
-}
+  "config_flow": true,
+  "documentation": "https://github.com/renaudpaillard-ux/nice-mncut-ha",
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/renaudpaillard-ux/nice-mncut-ha/issues",
+  "requirements": ["websockets>=11.0"],
+  "version": "1.0.2"
+ }
