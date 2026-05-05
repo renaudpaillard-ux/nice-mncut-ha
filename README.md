@@ -1,13 +1,13 @@
 # Nice MNCUT — Home Assistant Integration
 
-![Preview](assets/dashboard_premium.png)
-
-🇫🇷 [Lire en français](README.fr.md)
-
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 ![HA Version](https://img.shields.io/badge/Home%20Assistant-2023.1%2B-blue)
 
+🇫🇷 [Lire en français](README.fr.md)
+
 Home Assistant integration for the **Nice MNCUT** alarm control panel, using a local WebSocket connection (no cloud required).
+
+![Preview](assets/dashboard_premium.png)
 
 ---
 
@@ -74,7 +74,7 @@ Copy `custom_components/nice_mncut` into `/config/custom_components/` and restar
 
 ---
 
-## Configuration
+## ⚙️ Configuration
 
 1. Go to **Settings → Devices & Services → Add Integration**
 2. Search for **Nice MNCUT**
@@ -91,7 +91,9 @@ Copy `custom_components/nice_mncut` into `/config/custom_components/` and restar
 
 ### 🧩 Simple Dashboard
 
-![Simple dashboard](assets/dashboard_simple.png)
+<p align="center">
+  <img src="assets/dashboard_simple.png" width="800">
+</p>
 
 ### ✨ Premium Dashboard
 
@@ -103,7 +105,7 @@ Copy `custom_components/nice_mncut` into `/config/custom_components/` and restar
 
 ---
 
-## Entities
+## 🧩 Entities
 
 | Entity                                          | Type          | Description               |
 | ----------------------------------------------- | ------------- | ------------------------- |
@@ -122,7 +124,7 @@ Copy `custom_components/nice_mncut` into `/config/custom_components/` and restar
 
 ---
 
-## Services
+## 🛠️ Services
 
 ### `nice_mncut.clear_anomalies`
 
@@ -142,7 +144,7 @@ data:
 
 ---
 
-## Supported States
+## 📊 Supported States
 
 | HA State      | Description                 |
 | ------------- | --------------------------- |
@@ -155,7 +157,7 @@ data:
 
 ---
 
-## Troubleshooting
+## 🐛 Troubleshooting
 
 **Integration not connecting:**
 
