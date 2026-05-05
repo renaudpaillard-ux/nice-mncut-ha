@@ -1,39 +1,39 @@
 # Nice MNCUT — Intégration Home Assistant
 
-![Preview](assets/dashboard_premium.png)
-
-🇬🇧 [Read in English](README.md)
-
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 ![HA Version](https://img.shields.io/badge/Home%20Assistant-2023.1%2B-blue)
 
-Cette intégration permet de piloter une centrale d'alarme **Nice MNCUT** directement depuis Home Assistant, via une connexion WebSocket locale (sans cloud).
+🇬🇧 [Read in English](README.md)
+
+Intégration Home Assistant pour la centrale d'alarme **Nice MNCUT**, utilisant une connexion WebSocket locale (aucun cloud requis).
+
+![Preview](assets/dashboard_premium.png)
 
 ---
 
 ## 🎯 Contexte du projet
 
-Ce dépôt repose sur un vrai projet personnel de domotique et sert aussi à démontrer un travail d'intégration solide autour de :
+Ce dépôt repose sur un projet personnel réel de domotique et vise également à démontrer un travail d'intégration solide autour de :
 
-- l'architecture d'une intégration personnalisée Home Assistant
-- une communication locale sans dépendance cloud
+- l'architecture des intégrations personnalisées Home Assistant
+- une communication locale-first sans dépendance au cloud
 - la gestion d'état en temps réel via WebSocket
-- des dashboards utilisables au quotidien et une distribution via HACS
+- une utilisation pratique dans un tableau de bord et une distribution HACS
 
 ---
 
 ## 🧠 Contexte technique
 
-Cette intégration a été développée à la suite d'une phase de rétro-ingénierie du système Nice MNCUT.
+Cette intégration a été développée après une phase de rétro-ingénierie du système Nice MNCUT.
 
-Le travail a notamment consisté à :
+Le travail a inclus :
 
-- analyser les communications WebSocket entre l'interface web et la centrale
-- inspecter le code de l'application web de l'alarme
-- identifier les formats de messages et les transitions d'état
-- reconstruire une couche de communication fiable pour Home Assistant
+- l'analyse des échanges WebSocket entre l'interface web et la centrale d'alarme
+- l'analyse du code de l'interface web de l'alarme
+- l'identification des formats de messages et des transitions d'état
+- la reconstruction d'une couche de communication fiable pour Home Assistant
 
-Cette approche a permis de construire une intégration entièrement locale et temps réel, sans dépendre d'une API officielle ni d'un service cloud.
+Cette approche a permis de construire une intégration entièrement locale et en temps réel, sans dépendre d'une API officielle ni d'un service cloud.
 
 ---
 
@@ -43,17 +43,17 @@ Cette approche a permis de construire une intégration entièrement locale et te
 - 📡 Mises à jour d'état en temps réel via WebSocket (`local_push`)
 - 🔋 Suivi du niveau de batterie (%)
 - ⚡ État de l'alimentation secteur
-- 🚨 Détection de sabotage, contact ouvert et capteur déclenché
+- 🚨 Détection des sabotages, contacts ouverts et capteurs déclenchés
 - ⏱️ Décompte du délai de sortie
 - 🛠️ Service d'acquittement des anomalies (`clear_anomalies`)
-- 🌐 Multi-langue : anglais et français
+- 🌐 Multilingue : anglais et français
 
 ---
 
 ## 📋 Prérequis
 
-- Home Assistant **2023.1 ou supérieur**
-- Centrale d'alarme Nice MNCUT accessible sur le réseau local
+- Home Assistant **2023.1 ou plus récent**
+- Centrale d'alarme Nice MNCUT accessible sur votre réseau local
 - Port WebSocket **4012** accessible depuis Home Assistant
 
 ---
@@ -62,38 +62,40 @@ Cette approche a permis de construire une intégration entièrement locale et te
 
 ### Via HACS (recommandé)
 
-1. Ouvrir **HACS → Intégrations**
-2. Cliquer sur les trois points (en haut à droite) → **Dépôts personnalisés**
-3. Ajouter l'URL de ce dépôt et sélectionner la catégorie **Intégration**
-4. Rechercher **Nice MNCUT** et installer
-5. Redémarrer Home Assistant
+1. Ouvrez **HACS → Integrations**
+2. Cliquez sur les trois points (en haut à droite) → **Custom repositories**
+3. Ajoutez l'URL de ce dépôt et sélectionnez la catégorie **Integration**
+4. Recherchez **Nice MNCUT** et installez l'intégration
+5. Redémarrez Home Assistant
 
-### Manuel
+### Manuelle
 
-Copier `custom_components/nice_mncut` dans `/config/custom_components/` et redémarrer Home Assistant.
+Copiez `custom_components/nice_mncut` dans `/config/custom_components/` puis redémarrez Home Assistant.
 
 ---
 
 ## ⚙️ Configuration
 
-1. Aller dans **Paramètres → Appareils et services → Ajouter une intégration**
-2. Rechercher **Nice MNCUT**
-3. Renseigner :
-   - **Adresse IP** de la centrale MNCUT
-   - **Code PIN**
+1. Allez dans **Settings → Devices & Services → Add Integration**
+2. Recherchez **Nice MNCUT**
+3. Saisissez :
+   - l'**adresse IP** de votre centrale MNCUT
+   - le **code PIN**
 
 ---
 
-## 🖥️ Exemples de dashboard
+## 🖥️ Exemples de tableaux de bord
 
 - [Simple : `examples/dashboard_simple.yaml`](examples/dashboard_simple.yaml)
 - [Premium : `examples/dashboard_premium.yaml`](examples/dashboard_premium.yaml)
 
-### 🧩 Dashboard simple
+### 🧩 Tableau de bord simple
 
-![Dashboard simple](assets/dashboard_simple.png)
+<p align="center">
+  <img src="assets/dashboard_simple.png" width="800">
+</p>
 
-### ✨ Dashboard premium
+### ✨ Tableau de bord premium
 
 <p align="center">
   <img src="assets/dashboard_premium.png" width="600"><br><br>
@@ -103,30 +105,30 @@ Copier `custom_components/nice_mncut` dans `/config/custom_components/` et redé
 
 ---
 
-## Entités
+## 🧩 Entités
 
-| Entité                                          | Type            | Description                     |
-| ----------------------------------------------- | --------------- | ------------------------------- |
-| `alarm_control_panel.nice_mncut`                | Panneau alarme  | Contrôle principal armement     |
-| `binary_sensor.nice_mncut_batterie_faible`      | Capteur binaire | Alerte batterie faible          |
-| `binary_sensor.nice_mncut_alimentation_secteur` | Capteur binaire | Alimentation secteur OK         |
-| `binary_sensor.nice_mncut_sabotage`             | Capteur binaire | Alerte sabotage / effraction    |
-| `binary_sensor.nice_mncut_contact_ouvert`       | Capteur binaire | Contact ouvert détecté          |
-| `binary_sensor.nice_mncut_capteur_declenche`    | Capteur binaire | Capteur de mouvement déclenché  |
-| `binary_sensor.nice_mncut_panique`              | Capteur binaire | Alarme panique                  |
-| `binary_sensor.nice_mncut_mode_maintenance`     | Capteur binaire | Mode maintenance                |
-| `sensor.nice_mncut_etat_brut`                   | Capteur         | Code état brut de la centrale   |
-| `sensor.nice_mncut_zones_armees`                | Capteur         | Nombre de zones armées          |
-| `sensor.nice_mncut_niveau_batterie`             | Capteur         | Niveau de batterie (%)          |
-| `sensor.nice_mncut_delai_de_sortie`             | Capteur         | Décompte du délai de sortie (s) |
+| Entité                                          | Type            | Description                              |
+| ----------------------------------------------- | --------------- | ---------------------------------------- |
+| `alarm_control_panel.nice_mncut`                | Panneau alarme  | Contrôle principal d'armement/désarmement |
+| `binary_sensor.nice_mncut_batterie_faible`      | Capteur binaire | Alerte de batterie faible                |
+| `binary_sensor.nice_mncut_alimentation_secteur` | Capteur binaire | Alimentation secteur OK                  |
+| `binary_sensor.nice_mncut_sabotage`             | Capteur binaire | Alerte de sabotage                       |
+| `binary_sensor.nice_mncut_contact_ouvert`       | Capteur binaire | Contact ouvert détecté                   |
+| `binary_sensor.nice_mncut_capteur_declenche`    | Capteur binaire | Capteur de mouvement déclenché           |
+| `binary_sensor.nice_mncut_panique`              | Capteur binaire | Alarme panique                           |
+| `binary_sensor.nice_mncut_mode_maintenance`     | Capteur binaire | Mode maintenance                         |
+| `sensor.nice_mncut_etat_brut`                   | Capteur         | Code d'état brut de la centrale          |
+| `sensor.nice_mncut_zones_armees`                | Capteur         | Nombre de zones armées                   |
+| `sensor.nice_mncut_niveau_batterie`             | Capteur         | Niveau de batterie (%)                   |
+| `sensor.nice_mncut_delai_de_sortie`             | Capteur         | Décompte du délai de sortie (s)          |
 
 ---
 
-## Services
+## 🛠️ Services
 
 ### `nice_mncut.clear_anomalies`
 
-Acquitte les anomalies (sabotage, contact ouvert, etc.) pour permettre le réarmement.
+Acquitte les anomalies (sabotage, contact ouvert, etc.) afin de permettre le réarmement.
 
 | Champ   | Requis | Défaut   | Description                        |
 | ------- | ------ | -------- | ---------------------------------- |
@@ -142,7 +144,7 @@ data:
 
 ---
 
-## États supportés
+## 📊 États pris en charge
 
 | État HA       | Description                       |
 | ------------- | --------------------------------- |
@@ -155,24 +157,24 @@ data:
 
 ---
 
-## Dépannage
+## 🐛 Dépannage
 
 **L'intégration ne se connecte pas :**
 
-- Vérifier l'adresse IP et que le port 4012 est ouvert
-- Consulter les logs HA : `Paramètres → Système → Journaux`, filtrer par `nice_mncut`
+- Vérifiez l'adresse IP et que le port 4012 est ouvert
+- Consultez les journaux HA : `Settings → System → Logs`, filtrez par `nice_mncut`
 
 **Impossible de réarmer après une anomalie :**
 
-- Utiliser d'abord le service `nice_mncut.clear_anomalies`
+- Utilisez d'abord le service `nice_mncut.clear_anomalies`
 
 ---
 
 ## 🧰 Workflow d'ingénierie
 
-Ce projet reflète également un workflow de développement moderne, construit autour de VS Code, de la rétro-ingénierie et d'outils de codage assisté par IA comme Codex et Claude Code.
+Ce projet reflète également un workflow de développement moderne construit autour de VS Code, de la rétro-ingénierie et d'outils de codage assisté par IA tels que Codex et Claude Code.
 
-Ces outils ont permis d'accélérer l'implémentation, l'analyse du protocole, la documentation et les cycles d'itération, tandis que la compréhension du système, les choix d'architecture, la validation et les décisions techniques finales sont restés sous le contrôle de l'auteur.
+Ces outils ont été utilisés pour accélérer l'implémentation, l'analyse du protocole, la documentation et les cycles d'itération, tandis que la compréhension du système, les décisions d'architecture, la validation et les choix techniques finaux sont restés sous le contrôle de l'auteur.
 
 ---
 
