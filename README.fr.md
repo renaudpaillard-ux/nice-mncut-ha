@@ -2,6 +2,8 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 ![HA Version](https://img.shields.io/badge/Home%20Assistant-2023.1%2B-blue)
+[![HACS validation](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml/badge.svg)](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml)
+[![Hassfest validation](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml/badge.svg?job=hassfest)](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml)
 
 🇬🇧 [Read in English](README.md)
 
@@ -107,20 +109,20 @@ Copiez `custom_components/nice_mncut` dans `/config/custom_components/` puis red
 
 ## 🧩 Entités
 
-| Entité                                          | Type            | Description                              |
-| ----------------------------------------------- | --------------- | ---------------------------------------- |
+| Entité                                          | Type            | Description                               |
+| ----------------------------------------------- | --------------- | ----------------------------------------- |
 | `alarm_control_panel.nice_mncut`                | Panneau alarme  | Contrôle principal d'armement/désarmement |
-| `binary_sensor.nice_mncut_batterie_faible`      | Capteur binaire | Alerte de batterie faible                |
-| `binary_sensor.nice_mncut_alimentation_secteur` | Capteur binaire | Alimentation secteur OK                  |
-| `binary_sensor.nice_mncut_sabotage`             | Capteur binaire | Alerte de sabotage                       |
-| `binary_sensor.nice_mncut_contact_ouvert`       | Capteur binaire | Contact ouvert détecté                   |
-| `binary_sensor.nice_mncut_capteur_declenche`    | Capteur binaire | Capteur de mouvement déclenché           |
-| `binary_sensor.nice_mncut_panique`              | Capteur binaire | Alarme panique                           |
-| `binary_sensor.nice_mncut_mode_maintenance`     | Capteur binaire | Mode maintenance                         |
-| `sensor.nice_mncut_etat_brut`                   | Capteur         | Code d'état brut de la centrale          |
-| `sensor.nice_mncut_zones_armees`                | Capteur         | Nombre de zones armées                   |
-| `sensor.nice_mncut_niveau_batterie`             | Capteur         | Niveau de batterie (%)                   |
-| `sensor.nice_mncut_delai_de_sortie`             | Capteur         | Décompte du délai de sortie (s)          |
+| `binary_sensor.nice_mncut_batterie_faible`      | Capteur binaire | Alerte de batterie faible                 |
+| `binary_sensor.nice_mncut_alimentation_secteur` | Capteur binaire | Alimentation secteur OK                   |
+| `binary_sensor.nice_mncut_sabotage`             | Capteur binaire | Alerte de sabotage                        |
+| `binary_sensor.nice_mncut_contact_ouvert`       | Capteur binaire | Contact ouvert détecté                    |
+| `binary_sensor.nice_mncut_capteur_declenche`    | Capteur binaire | Capteur de mouvement déclenché            |
+| `binary_sensor.nice_mncut_panique`              | Capteur binaire | Alarme panique                            |
+| `binary_sensor.nice_mncut_mode_maintenance`     | Capteur binaire | Mode maintenance                          |
+| `sensor.nice_mncut_etat_brut`                   | Capteur         | Code d'état brut de la centrale           |
+| `sensor.nice_mncut_zones_armees`                | Capteur         | Nombre de zones armées                    |
+| `sensor.nice_mncut_niveau_batterie`             | Capteur         | Niveau de batterie (%)                    |
+| `sensor.nice_mncut_delai_de_sortie`             | Capteur         | Décompte du délai de sortie (s)           |
 
 ---
 

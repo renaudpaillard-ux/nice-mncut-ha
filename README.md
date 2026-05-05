@@ -2,6 +2,8 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 ![HA Version](https://img.shields.io/badge/Home%20Assistant-2023.1%2B-blue)
+[![HACS validation](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml/badge.svg)](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml)
+[![Hassfest validation](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml/badge.svg?job=hassfest)](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml)
 
 🇫🇷 [Lire en français](README.fr.md)
 
