@@ -18,10 +18,13 @@ from contextlib import suppress
 import websockets
 from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.typing import ConfigType
 from homeassistant.const import Platform
 
 from .const import DOMAIN, CONF_IP, CONF_PIN, STX, ETX, WS_TARGET_ID, WS_PAIRING_USERNAME, WS_PAIRING_PASSWORD
+
+from homeassistant.helpers import config_validation as cv
+
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -431,11 +434,6 @@ class NiceMncutHub:
         except Exception as e:
             _LOGGER.error("Nice MNCUT → Erreur acquittement anomalies: %s", e, exc_info=True)
             return False
-
-
-async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
-    """Pas de support YAML."""
-    return True
 
 
 async def async_handle_clear_anomalies(call: ServiceCall) -> None:
