@@ -1,9 +1,9 @@
 # Nice MNCUT — Intégration Home Assistant
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
+[![HACS](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 ![HA Version](https://img.shields.io/badge/Home%20Assistant-2023.1%2B-blue)
-[![HACS validation](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml/badge.svg)](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml)
-[![Hassfest validation](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml/badge.svg?job=hassfest)](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml)
+[![HACS validation](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/hacs.yml/badge.svg)](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/hacs.yml)
+[![Hassfest validation](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/hassfest.yml/badge.svg)](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/hassfest.yml)
 
 🇬🇧 [Read in English](README.md)
 
@@ -15,7 +15,7 @@ Intégration Home Assistant pour la centrale d'alarme **Nice MNCUT**, utilisant 
 
 ## 🎯 Contexte du projet
 
-Ce dépôt repose sur un projet personnel réel de domotique et vise également à démontrer un travail d'intégration solide autour de :
+Ce dépôt repose sur un véritable projet personnel de domotique et présente une intégration Home Assistant complète mettant en avant :
 
 - l'architecture des intégrations personnalisées Home Assistant
 - une communication locale-first sans dépendance au cloud
@@ -31,7 +31,7 @@ Cette intégration a été développée après une phase de rétro-ingénierie d
 Le travail a inclus :
 
 - l'analyse des échanges WebSocket entre l'interface web et la centrale d'alarme
-- l'analyse du code de l'interface web de l'alarme
+- l'analyse de l'application web embarquée de la centrale
 - l'identification des formats de messages et des transitions d'état
 - la reconstruction d'une couche de communication fiable pour Home Assistant
 
@@ -41,14 +41,14 @@ Cette approche a permis de construire une intégration entièrement locale et en
 
 ## ✨ Fonctionnalités
 
-- 🔒 Armement / désarmement / armement partiel via Home Assistant
-- 📡 Mises à jour d'état en temps réel via WebSocket (`local_push`)
-- 🔋 Suivi du niveau de batterie (%)
+- 🔒 Armement / désarmement / armement partiel
+- 📡 Mises à jour en temps réel via WebSocket
+- ⏱️ Décompte du délai de sortie
+- 🔋 Suivi du niveau de batterie
 - ⚡ État de l'alimentation secteur
 - 🚨 Détection des sabotages, contacts ouverts et capteurs déclenchés
-- ⏱️ Décompte du délai de sortie
-- 🛠️ Service d'acquittement des anomalies (`clear_anomalies`)
-- 🌐 Multilingue : anglais et français
+- 🛠️ Service d'acquittement des anomalies
+- 🌐 Anglais et français
 
 ---
 
@@ -64,11 +64,10 @@ Cette approche a permis de construire une intégration entièrement locale et en
 
 ### Via HACS (recommandé)
 
-1. Ouvrez **HACS → Integrations**
-2. Cliquez sur les trois points (en haut à droite) → **Custom repositories**
-3. Ajoutez l'URL de ce dépôt et sélectionnez la catégorie **Integration**
-4. Recherchez **Nice MNCUT** et installez l'intégration
-5. Redémarrez Home Assistant
+1. Ouvrez **HACS**
+2. Recherchez **Nice MNCUT**
+3. Ouvrez la page de l'intégration et sélectionnez **Télécharger**
+4. Redémarrez Home Assistant
 
 ### Manuelle
 
@@ -78,9 +77,10 @@ Copiez `custom_components/nice_mncut` dans `/config/custom_components/` puis red
 
 ## ⚙️ Configuration
 
-1. Allez dans **Settings → Devices & Services → Add Integration**
-2. Recherchez **Nice MNCUT**
-3. Saisissez :
+1. Allez dans **Paramètres → Appareils et services**
+2. Cliquez sur **Ajouter une intégration**
+3. Recherchez **Nice MNCUT**
+4. Saisissez :
    - l'**adresse IP** de votre centrale MNCUT
    - le **code PIN**
 
@@ -180,6 +180,12 @@ Ces outils ont été utilisés pour accélérer l'implémentation, l'analyse du 
 
 ---
 
+## 📝 Historique des versions
+
+Consultez le fichier [CHANGELOG.md](CHANGELOG.md) pour connaître l'historique des versions et les évolutions à venir.
+
+---
+
 ## 🤝 Contribuer
 
 Les issues et contributions sont les bienvenues !
@@ -188,7 +194,7 @@ Les issues et contributions sont les bienvenues !
 
 ## ⚠️ Avertissement
 
-Non affilié à Nice S.p.A.
+Ce projet n'est ni affilié, ni approuvé, ni soutenu par Nice S.p.A.
 
 ---
 
