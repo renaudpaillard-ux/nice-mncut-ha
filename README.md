@@ -1,9 +1,9 @@
 # Nice MNCUT — Home Assistant Integration
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
+[![HACS](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 ![HA Version](https://img.shields.io/badge/Home%20Assistant-2023.1%2B-blue)
-[![HACS validation](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml/badge.svg)](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml)
-[![Hassfest validation](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml/badge.svg?job=hassfest)](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/validate.yml)
+[![HACS validation](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/hacs.yml/badge.svg)](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/hacs.yml)
+[![Hassfest validation](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/hassfest.yml/badge.svg)](https://github.com/renaudpaillard-ux/nice-mncut-ha/actions/workflows/hassfest.yml)
 
 🇫🇷 [Lire en français](README.fr.md)
 
@@ -15,7 +15,7 @@ Home Assistant integration for the **Nice MNCUT** alarm control panel, using a l
 
 ## 🎯 Project Context
 
-This repository is based on a real personal home automation project and is also intended to demonstrate solid integration work around:
+This repository is based on a real personal home automation project and is also intended to showcase a complete Home Assistant integration featuring:
 
 - Home Assistant custom integration architecture
 - local-first communication with no cloud dependency
@@ -31,7 +31,7 @@ This integration was developed after a reverse-engineering phase of the Nice MNC
 The work included:
 
 - analyzing WebSocket communications between the web interface and the alarm panel
-- inspecting the alarm's web application code
+- analyzing the alarm's embedded web application
 - identifying message formats and state transitions
 - reconstructing a reliable communication layer for Home Assistant
 
@@ -41,14 +41,14 @@ This approach made it possible to build a fully local, real-time integration wit
 
 ## ✨ Features
 
-- 🔒 Arm / Disarm / Partial arm via Home Assistant
-- 📡 Real-time state updates via WebSocket (`local_push`)
-- 🔋 Battery level monitoring (%)
-- ⚡ Mains power status
-- 🚨 Tamper, open contact, and triggered sensor detection
-- ⏱️ Exit delay countdown
-- 🛠️ Anomaly acknowledgement service (`clear_anomalies`)
-- 🌐 Multi-language: English & French
+🔒 Arm / Disarm / Partial arm
+📡 Real-time WebSocket updates
+⏱️ Exit delay countdown
+🔋 Battery monitoring
+⚡ Mains power status
+🚨 Tamper, open contact and triggered sensor detection
+🛠️ Anomaly acknowledgement service
+🌐 English & French
 
 ---
 
@@ -64,11 +64,10 @@ This approach made it possible to build a fully local, real-time integration wit
 
 ### Via HACS (recommended)
 
-1. Open **HACS → Integrations**
-2. Click the three dots (top right) → **Custom repositories**
-3. Add this repository URL and select category **Integration**
-4. Search for **Nice MNCUT** and install
-5. Restart Home Assistant
+1. Open **HACS**
+2. Search for **Nice MNCUT**
+3. Open the integration page and select **Download**
+4. Restart Home Assistant
 
 ### Manual
 
@@ -78,9 +77,10 @@ Copy `custom_components/nice_mncut` into `/config/custom_components/` and restar
 
 ## ⚙️ Configuration
 
-1. Go to **Settings → Devices & Services → Add Integration**
-2. Search for **Nice MNCUT**
-3. Enter:
+1. Go to Settings → Devices & Services
+2. Click Add Integration
+3. Search for **Nice MNCUT**
+4. Enter:
    - **IP address** of your MNCUT panel
    - **PIN code**
 
@@ -180,6 +180,12 @@ These tools were used to accelerate implementation, protocol analysis, documenta
 
 ---
 
+## 📝 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for the release notes and upcoming changes.
+
+---
+
 ## 🤝 Contributing
 
 Issues and contributions are welcome!
@@ -188,7 +194,7 @@ Issues and contributions are welcome!
 
 ## ⚠️ Disclaimer
 
-Not affiliated with Nice S.p.A.
+This project is not affiliated with, endorsed by, or supported by Nice S.p.A.
 
 ---
 
